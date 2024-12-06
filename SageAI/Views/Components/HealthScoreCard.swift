@@ -11,55 +11,74 @@ struct HealthScoreCard: View {
     let score: HealthScore
     
     var body: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: 20) {
+            // Header
             HStack {
                 Text("Health Score")
-                    .font(.headline)
-                Spacer()
+                    .font(.title2)
+                    .fontWeight(.semibold)
                 Image(systemName: "star.fill")
                     .foregroundColor(.yellow)
             }
             
-            Text("\(score.total)")
-                .font(.system(size: 48, weight: .bold))
-                + Text("/100")
-                .font(.title2)
-                .foregroundColor(.secondary)
+            // Main Score
+            HStack {
+                Text("\(score.total)")
+                    .font(.system(size: 56, weight: .bold))
+                Text("/100")
+                    .font(.system(size: 24))
+                    .foregroundColor(.gray)
+                    .baselineOffset(20) // Align with the main number
+            }
             
             // Progress Bar
             GeometryReader { geometry in
                 ZStack(alignment: .leading) {
                     Rectangle()
                         .fill(Color.secondary.opacity(0.2))
-                        .frame(height: 8)
-                        .cornerRadius(4)
+                        .frame(height: 6)
+                        .cornerRadius(3)
                     
                     Rectangle()
                         .fill(Color.green)
-                        .frame(width: CGFloat(score.total) / 100 * geometry.size.width, height: 8)
-                        .cornerRadius(4)
+                        .frame(width: CGFloat(score.total) / 100 * geometry.size.width, height: 6)
+                        .cornerRadius(3)
                 }
             }
-            .frame(height: 8)
+            .frame(height: 6)
+            .padding(.bottom, 10)
             
-            // Score Breakdown
-            LazyVGrid(columns: [
-                GridItem(.flexible()),
-                GridItem(.flexible())
-            ], spacing: 16) {
-                ScoreBreakdownItem(label: "Nutritional Balance", value: score.breakdown.nutritionalBalance)
-                ScoreBreakdownItem(label: "Portion Size", value: score.breakdown.portionSize)
-                ScoreBreakdownItem(label: "Whole Foods", value: score.breakdown.wholeFoods)
-                ScoreBreakdownItem(label: "Nutrient Density", value: score.breakdown.nutrientDensity)
+            // Score Breakdown Grid
+            Grid(alignment: .leading, horizontalSpacing: 32.0, verticalSpacing: 32.0) {
+                GridRow {
+                    ScoreBreakdownItem(
+                        label: "Nutritional Balance",
+                        value: score.breakdown.nutritionalBalance
+                    )
+                    ScoreBreakdownItem(
+                        label: "Portion Size",
+                        value: score.breakdown.portionSize
+                    )
+                }
+                
+                GridRow {
+                    ScoreBreakdownItem(
+                        label: "Whole Foods",
+                        value: score.breakdown.wholeFoods
+                    )
+                    ScoreBreakdownItem(
+                        label: "Nutrient Density",
+                        value: score.breakdown.nutrientDensity
+                    )
+                }
             }
         }
-        .padding()
+        .padding(20)
         .background(Color(.systemBackground))
-        .cornerRadius(12)
-        .shadow(radius: 2)
+        .cornerRadius(16)
+        .shadow(radius: 1)
     }
 }
-
 
 #Preview {
     HealthScoreCard(score: exampleResponse.healthScore)
