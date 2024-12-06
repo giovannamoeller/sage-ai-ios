@@ -1,28 +1,27 @@
 //
-//  NutritionItem.swift
+//  NutrientItem.swift
 //  SageAI
 //
-//  Created by Giovanna Moeller on 04/12/24.
+//  Created by Giovanna Moeller on 06/12/24.
 //
 
 import SwiftUI
 
-struct NutritionItem: View {
+struct NutrientItem: View {
     let label: String
     let value: String
     
     var body: some View {
-        VStack {
+        VStack(alignment: .leading, spacing: 4) {
             Text(label)
                 .font(.caption)
                 .foregroundColor(.secondary)
             Text(value)
-                .font(.headline)
+                .fontWeight(.medium)
         }
-        .frame(maxWidth: .infinity)
     }
 }
 
 #Preview {
-    NutritionItem(label: "Calories", value: "396")
+    NutrientItem(label: "Calorias", value: "360kcal")
 }
