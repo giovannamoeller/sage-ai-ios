@@ -12,12 +12,11 @@ struct HomeView: View {
     @State private var isShowingImagePicker = false
     @State private var selectedImage: UIImage?
     @State private var isLoading = false
-    @State private var loadingMessage = ""
+    @State private var loadingMessage = "Just a second. We're analyzing your food..."
     @State private var errorAlert: ErrorAlert?
     
     private func analyzeFood(_ image: UIImage) {
         isLoading = true
-        loadingMessage = "Analyzing food..."
         
         Task {
             do {

@@ -2,8 +2,13 @@
   "colors" : [
     {
       "color" : {
-        "platform" : "watchos",
-        "reference" : "systemMintColor"
+        "color-space" : "extended-srgb",
+        "components" : {
+          "alpha" : "1.000",
+          "blue" : "0.000",
+          "green" : "0.473",
+          "red" : "1.000"
+        }
       },
       "idiom" : "universal"
     }
