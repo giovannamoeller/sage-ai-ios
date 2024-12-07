@@ -12,7 +12,7 @@ struct FoodAnalysisView: View {
     
     var body: some View {
         ScrollView {
-            VStack(spacing: 16) {
+            VStack(alignment: .leading, spacing: 16) {
                 HealthScoreCard(score: analysis.healthScore)
                 
                 NutritionFactsCard(nutritionalInfo: analysis.nutritionalInfo)

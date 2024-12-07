@@ -11,7 +11,7 @@ struct NutritionFactsCard: View {
     let nutritionalInfo: NutritionalInfo
     
     var body: some View {
-        VStack {
+        VStack(alignment: .leading) {
             // Header
             HStack {
                 Text("Nutrition Facts")
@@ -21,7 +21,7 @@ struct NutritionFactsCard: View {
                 Image(systemName: "leaf.fill")
                     .foregroundColor(.green)
             }
-            .padding(28)
+            .padding([.top, .leading, .trailing], 28.0)
             
             // Main Nutrients Grid
             VStack(spacing: 32) {
