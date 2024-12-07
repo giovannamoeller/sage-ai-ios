@@ -10,18 +10,25 @@ import SwiftUI
 struct NutrientItem: View {
     let label: String
     let value: String
+    let unit: String
     
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(label)
-                .font(.caption)
-                .foregroundColor(.secondary)
-            Text(value)
-                .fontWeight(.medium)
+                .font(.subheadline)
+                .foregroundColor(.gray)
+            
+            HStack(alignment: .firstTextBaseline, spacing: 2) {
+                Text(value)
+                    .font(.system(size: 24, weight: .semibold))
+                Text(unit)
+                    .font(.system(size: 16, weight: .medium))
+                    .foregroundColor(.gray)
+            }
         }
     }
 }
 
 #Preview {
-    NutrientItem(label: "Calorias", value: "360kcal")
+    NutrientItem(label: "Calorias", value: "360", unit: "kcal")
 }

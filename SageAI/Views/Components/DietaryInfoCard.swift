@@ -26,7 +26,7 @@ struct DietaryInfoCard: View {
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                     
-                    FlowLayout(mode: .scrollable) {
+                    FlowLayout() {
                         ForEach(dietaryInfo.suitableDiets, id: \.self) { diet in
                             Text(diet)
                                 .font(.caption)
@@ -44,7 +44,7 @@ struct DietaryInfoCard: View {
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                     
-                    FlowLayout(mode: .scrollable) {
+                    FlowLayout() {
                         ForEach(dietaryInfo.allergens, id: \.self) { allergen in
                             Text(allergen)
                                 .font(.caption)

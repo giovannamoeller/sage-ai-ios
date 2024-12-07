@@ -11,55 +11,90 @@ struct NutritionFactsCard: View {
     let nutritionalInfo: NutritionalInfo
     
     var body: some View {
-        VStack(spacing: 12) {
+        VStack {
+            // Header
             HStack {
                 Text("Nutrition Facts")
-                    .font(.headline)
+                    .font(.title2)
+                    .fontWeight(.semibold)
                 Spacer()
                 Image(systemName: "leaf.fill")
                     .foregroundColor(.green)
             }
+            .padding(28)
             
-            LazyVGrid(columns: [
-                GridItem(.flexible()),
-                GridItem(.flexible())
-            ], spacing: 16) {
-                NutrientItem(label: "Calories", value: "\(nutritionalInfo.calories)")
-                NutrientItem(label: "Protein", value: "\(nutritionalInfo.protein)g")
-                NutrientItem(label: "Total Carbs", value: "\(nutritionalInfo.carbs.total)g")
-                NutrientItem(label: "Total Fat", value: "\(nutritionalInfo.fat.total)g")
-                NutrientItem(label: "Fiber", value: "\(nutritionalInfo.fiber)g")
-            }
-            
-            if !nutritionalInfo.keyNutrients.isEmpty {
-                Divider()
+            // Main Nutrients Grid
+            VStack(spacing: 32) {
+                // Top Row: Calories and Protein
+                HStack {
+                    NutrientItem(
+                        label: "Calories",
+                        value: "\(nutritionalInfo.calories)",
+                        unit: "kcal"
+                    )
+                    Spacer()
+                    NutrientItem(
+                        label: "Protein",
+                        value: String(format: "%.1f", nutritionalInfo.protein),
+                        unit: "g"
+                    )
+                }
                 
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("Key Nutrients")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                    
-                    FlowLayout(mode: .scrollable) {
-                        ForEach(nutritionalInfo.keyNutrients, id: \.self) { nutrient in
-                            Text(nutrient)
-                                .font(.caption)
-                                .padding(.horizontal, 8)
-                                .padding(.vertical, 4)
-                                .background(Color.blue.opacity(0.1))
-                                .foregroundColor(.blue)
-                                .cornerRadius(8)
-                        }
+                // Middle Row: Carbs and Fat
+                HStack {
+                    NutrientItem(
+                        label: "Total Carbs",
+                        value: String(format: "%.1f", nutritionalInfo.carbs.total),
+                        unit: "g"
+                    )
+                    Spacer()
+                    NutrientItem(
+                        label: "Total Fat",
+                        value: String(format: "%.1f", nutritionalInfo.fat.total),
+                        unit: "g"
+                    )
+                }
+                
+                // Bottom Row: Fiber
+                HStack {
+                    NutrientItem(
+                        label: "Fiber",
+                        value: String(format: "%.1f", nutritionalInfo.fiber),
+                        unit: "g"
+                    )
+                    Spacer()
+                }
+            }
+            .padding()
+            
+            Divider()
+                .padding(.vertical, 8)
+            
+            // Key Nutrients Section
+            VStack(alignment: .leading, spacing: 12) {
+                Text("Key Nutrients")
+                    .font(.headline)
+                    .foregroundColor(.gray)
+                
+                FlowLayout(spacing: 8) {
+                    ForEach(nutritionalInfo.keyNutrients, id: \.self) { nutrient in
+                        Text(nutrient)
+                            .font(.subheadline)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 6)
+                            .background(Color.blue.opacity(0.1))
+                            .foregroundColor(.blue)
+                            .cornerRadius(8)
                     }
                 }
             }
+            .padding()
         }
-        .padding()
         .background(Color(.systemBackground))
-        .cornerRadius(12)
-        .shadow(radius: 2)
+        .cornerRadius(16)
+        .shadow(radius: 1)
     }
 }
-
 
 #Preview {
     NutritionFactsCard(nutritionalInfo: exampleResponse.nutritionalInfo)

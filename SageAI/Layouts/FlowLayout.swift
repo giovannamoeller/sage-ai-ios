@@ -8,53 +8,55 @@
 import SwiftUI
 
 struct FlowLayout: Layout {
-    var mode: Mode = .scrollable
-    
-    enum Mode {
-        case scrollable, stack
-    }
+    var spacing: CGFloat = 8
     
     func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
-        let sizes = subviews.map { $0.sizeThatFits(.unspecified) }
-        var width: CGFloat = 0
-        var height: CGFloat = 0
-        var x: CGFloat = 0
-        var y: CGFloat = 0
-        var rowHeight: CGFloat = 0
-        
-        for size in sizes {
-            if x + size.width > (proposal.width ?? 0) {
-                x = 0
-                y += rowHeight + 8
-                rowHeight = 0
-            }
-            
-            x += size.width + 8
-            width = max(width, x)
-            rowHeight = max(rowHeight, size.height)
-            height = y + rowHeight
-        }
-        
-        return CGSize(width: width, height: height)
+        let result = FlowResult(
+            in: proposal.width ?? 0,
+            spacing: spacing,
+            subviews: subviews
+        )
+        return result.size
     }
     
     func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
-        var x = bounds.minX
-        var y = bounds.minY
-        var rowHeight: CGFloat = 0
+        let result = FlowResult(
+            in: bounds.width,
+            spacing: spacing,
+            subviews: subviews
+        )
         
-        for subview in subviews {
-            let size = subview.sizeThatFits(.unspecified)
+        for (index, subview) in subviews.enumerated() {
+            let point = result.points[index]
+            subview.place(at: CGPoint(x: point.x + bounds.minX, y: point.y + bounds.minY), proposal: .unspecified)
+        }
+    }
+    
+    struct FlowResult {
+        var size: CGSize = .zero
+        var points: [CGPoint] = []
+        
+        init(in maxWidth: CGFloat, spacing: CGFloat, subviews: Subviews) {
+            var currentX: CGFloat = 0
+            var currentY: CGFloat = 0
+            var lineHeight: CGFloat = 0
             
-            if x + size.width > bounds.maxX {
-                x = bounds.minX
-                y += rowHeight + 8
-                rowHeight = 0
+            for subview in subviews {
+                let subviewSize = subview.sizeThatFits(.unspecified)
+                
+                if currentX + subviewSize.width > maxWidth {
+                    currentX = 0
+                    currentY += lineHeight + spacing
+                    lineHeight = 0
+                }
+                
+                points.append(CGPoint(x: currentX, y: currentY))
+                lineHeight = max(lineHeight, subviewSize.height)
+                currentX += subviewSize.width + spacing
+                size.width = max(size.width, currentX)
             }
             
-            subview.place(at: CGPoint(x: x, y: y), proposal: .unspecified)
-            x += size.width + 8
-            rowHeight = max(rowHeight, size.height)
+            size.height = currentY + lineHeight
         }
     }
 }
